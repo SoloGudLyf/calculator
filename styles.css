@@ -15,23 +15,24 @@ body {
 }
 .container {
   width: 400px;
-  height: 30vh;
-  background-color: antiquewhite;
+  height: 32vh;
   margin: auto;
   display: flex;
   flex-direction: column;
 }
 
 .display {
-  background-color: rgb(186, 186, 229);
+  background-color: rgb(156, 191, 221);
   width: 400px;
-  height: 70px;
+  height: 100px;
   margin-bottom: 0;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  overflow: hidden;
   font-size: 1.7rem;
   padding: 7px;
+  border-radius: 5px 5px 0 0;
 }
 
 .btns {
@@ -48,4 +49,11 @@ button {
 .clear,
 .equalTo {
   width: calc(2 * 100% / 4);
+}
+button:hover {
+  background-color: rgb(228, 231, 235);
+}
+
+button:active {
+  background-color: rgb(172, 193, 212);
 }
