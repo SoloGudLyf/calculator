@@ -8,12 +8,10 @@
 }
 
 body {
-  display: flex;
-  align-items: center;
-  width: 99vw;
-  height: 98vh;
-  flex-direction: column;
   background-color: rgb(245, 243, 243);
+}
+h1 {
+  text-align: center;
 }
 .container {
   width: 400px;
@@ -21,6 +19,8 @@ body {
   margin-top: 10vh;
   display: flex;
   flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .display {
