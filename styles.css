@@ -12,11 +12,13 @@ body {
   align-items: center;
   width: 99vw;
   height: 98vh;
+  flex-direction: column;
+  background-color: rgb(245, 243, 243);
 }
 .container {
   width: 400px;
   height: 32vh;
-  margin: auto;
+  margin-top: 10vh;
   display: flex;
   flex-direction: column;
 }
