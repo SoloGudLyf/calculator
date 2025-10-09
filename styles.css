@@ -23,14 +23,15 @@ body {
 }
 
 .display {
-  background-color: rgb(112, 112, 177);
+  background-color: rgb(186, 186, 229);
   width: 400px;
   height: 70px;
   margin-bottom: 0;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  font-size: 1.3rem;
+  font-size: 1.7rem;
+  padding: 7px;
 }
 
 .btns {

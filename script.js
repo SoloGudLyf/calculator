@@ -3,7 +3,7 @@ let operator;
 let secondNum;
 const container = document.querySelector(".container");
 const displayArea = document.querySelector(".display");
-const equalTo = document.querySelector(".equalTo");
+container.addEventListener("click", updateDisplayArea);
 
 function add(arr) {
   return arr[0] + arr[1];
@@ -18,7 +18,7 @@ function multiply(arr) {
 }
 
 function divide(arr) {
-    arr[0] / arr[1]
+  return arr[0] / arr[1];
 }
 function operate(num1, symbol, num2) {
   if (symbol === "+") return add([num1, num2]);
@@ -27,39 +27,71 @@ function operate(num1, symbol, num2) {
   if (symbol === "÷") return divide([num1, num2]);
 }
 
-function display(event) {
+function updateDisplayArea(event) {
   let elemClicked = event.target;
 
   if (elemClicked.textContent === "C") {
     displayArea.textContent = "";
-  } else if (elemClicked.textContent === "x") {
+  }
+
+  // Delete user input
+  else if (elemClicked.textContent === "del") {
     let exp = Array.from(displayArea.textContent);
     exp.pop();
     console.log(exp);
     displayArea.textContent = exp.join("");
-  } else if (elemClicked.textContent === "=") {
-  } else {
+  }
+
+  // Calculate expression and give answer
+  else if (elemClicked.textContent === "=") {
+    evaluate();
+  } else if (
+    elemClicked.textContent === "+" ||
+    elemClicked.textContent === "-" ||
+    elemClicked.textContent === "×" ||
+    elemClicked.textContent === "+"
+  ) {
+    // Check if an operator already exists
+    if (checkOperator()) {
+      return;
+    } else {
+      displayArea.textContent += elemClicked.textContent;
+    }
+  }
+
+  // Display number buttons clicked or decimal
+  else {
     displayArea.textContent += elemClicked.textContent;
   }
 }
 
-function evaluate(event) {
-  let elemClicked = event.target;
-  let operator;
+function checkOperator() {
+  let exp = Array.from(displayArea.textContent);
+  if (exp[0] === "-" || exp[0] === "+") {
+    return false;
+  } else if (
+    exp.includes("+") ||
+    exp.includes("-") ||
+    exp.includes("×") ||
+    exp.includes("+")
+  ) {
+    return true;
+  }
+}
+checkOperator();
+
+function evaluate() {
+  if (!checkOperator()) {
+    return;
+  }
+  
+  let expArr;
   if (displayArea.textContent.includes("+")) operator = "+";
   if (displayArea.textContent.includes("-")) operator = "-";
   if (displayArea.textContent.includes("×")) operator = "×";
   if (displayArea.textContent.includes("÷")) operator = "÷";
-  let expArr = displayArea.textContent.split(operator);
-  console.log(expArr);
+  expArr = displayArea.textContent.split(operator);
   firstNum = Number(expArr[0]);
   secondNum = Number(expArr[1]);
   displayArea.textContent = operate(firstNum, operator, secondNum);
 }
-
-container.addEventListener("click", display);
-equalTo.addEventListener("click", evaluate);
-console.log(operate(1, "+", 5));
-console.log(operate(1, "-", 9));
-console.log(operate(1, "×", 189));
-console.log(operate(5, "÷", 10));
