@@ -31,14 +31,14 @@ function updateDisplayArea(event) {
   let elemClicked = event.target;
 
   if (elemClicked.textContent === "C") {
-    displayArea.textContent = "";
+    displayArea.textContent = 0;
   }
 
   // Delete user input
   else if (elemClicked.textContent === "del") {
     let exp = Array.from(displayArea.textContent);
     exp.pop();
-    console.log(exp);
+    if (exp.length == 0) exp.push("0");
     displayArea.textContent = exp.join("");
   }
 
@@ -49,7 +49,7 @@ function updateDisplayArea(event) {
     elemClicked.textContent === "+" ||
     elemClicked.textContent === "-" ||
     elemClicked.textContent === "×" ||
-    elemClicked.textContent === "+"
+    elemClicked.textContent === "÷"
   ) {
     // Check if an operator already exists
     if (checkOperator()) {
@@ -61,36 +61,51 @@ function updateDisplayArea(event) {
 
   // Display number buttons clicked or decimal
   else {
-    displayArea.textContent += elemClicked.textContent;
+    displayArea.textContent =
+      displayArea.textContent == "0"
+        ? elemClicked.textContent
+        : displayArea.textContent + elemClicked.textContent;
   }
 }
 
 function checkOperator() {
   let exp = Array.from(displayArea.textContent);
+  console.log(displayArea.textContent);
+
   if (exp[0] === "-" || exp[0] === "+") {
+    // Check if there are other operators clicked
+    let operators = ["+", "-", "×", "÷"];
+    let operatorCount = 0;
+    exp.map((r) => {
+      if (operators.includes(r)) operatorCount++;
+    });
+    if (operatorCount === 2) return true;
+
+    // The only operator in the expression is a leading on i.e + or -
     return false;
   } else if (
     exp.includes("+") ||
     exp.includes("-") ||
     exp.includes("×") ||
-    exp.includes("+")
+    exp.includes("÷")
   ) {
     return true;
   }
 }
-checkOperator();
 
 function evaluate() {
   if (!checkOperator()) {
     return;
   }
-  
+
   let expArr;
   if (displayArea.textContent.includes("+")) operator = "+";
   if (displayArea.textContent.includes("-")) operator = "-";
   if (displayArea.textContent.includes("×")) operator = "×";
   if (displayArea.textContent.includes("÷")) operator = "÷";
   expArr = displayArea.textContent.split(operator);
+  console.log(expArr);
+
   firstNum = Number(expArr[0]);
   secondNum = Number(expArr[1]);
   displayArea.textContent = operate(firstNum, operator, secondNum);
