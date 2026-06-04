@@ -29,6 +29,8 @@ function operate(num1, symbol, num2) {
 
 function updateDisplayArea(event) {
   let elemClicked = event.target;
+  let exp = Array.from(displayArea.textContent);
+  console.log(exp);
 
   if (elemClicked.textContent === "C") {
     displayArea.textContent = 0;
@@ -36,7 +38,6 @@ function updateDisplayArea(event) {
 
   // Delete user input
   else if (elemClicked.textContent === "del") {
-    let exp = Array.from(displayArea.textContent);
     exp.pop();
     if (exp.length == 0) exp.push("0");
     displayArea.textContent = exp.join("");
@@ -58,7 +59,8 @@ function updateDisplayArea(event) {
       displayArea.textContent += elemClicked.textContent;
     }
   }
-
+  // Prevent double decimals in a number
+  else if (exp.includes(".") && elemClicked.textContent === ".") return;
   // Display number buttons clicked or decimal
   else {
     displayArea.textContent =
@@ -70,7 +72,6 @@ function updateDisplayArea(event) {
 
 function checkOperator() {
   let exp = Array.from(displayArea.textContent);
-  console.log(displayArea.textContent);
 
   if (exp[0] === "-" || exp[0] === "+") {
     // Check if there are other operators clicked
@@ -101,12 +102,11 @@ function evaluate() {
   let expArr;
   operator = getOperator(displayArea.textContent);
   expArr = displayArea.textContent.split(operator);
-  console.log(expArr);
-  console.log(operatorCount);
 
   if (operatorCount === 2) {
-    let secondOperator = getOperator(expArr[1]);
-    console.log(secondOperator);
+    let secondOperator = getOperator(expArr[1]) || "-";
+
+    console.log(secondOperator, operator);
     console.log(expArr);
 
     expArr = expArr.concat(expArr[1].split(secondOperator));
@@ -127,9 +127,18 @@ function evaluate() {
 
 function getOperator(str) {
   let operatorInStr;
-  if (str.includes("+")) operatorInStr = "+";
-  if (str.includes("-")) operatorInStr = "-";
-  if (str.includes("×")) operatorInStr = "×";
-  if (str.includes("÷")) operatorInStr = "÷";
+  if (str.includes("+")) {
+    operatorInStr = "+";
+  }
+  if (str.includes("-")) {
+    operatorInStr = "-";
+    return operatorInStr;
+  }
+  if (str.includes("×")) {
+    operatorInStr = "×";
+  }
+  if (str.includes("÷")) {
+    operatorInStr = "÷";
+  }
   return operatorInStr;
 }
