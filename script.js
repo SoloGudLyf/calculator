@@ -4,7 +4,7 @@ let secondNum;
 const container = document.querySelector(".container");
 const displayArea = document.querySelector(".display");
 container.addEventListener("click", updateDisplayArea);
-
+let operatorCount = 0;
 function add(arr) {
   return arr[0] + arr[1];
 }
@@ -75,7 +75,7 @@ function checkOperator() {
   if (exp[0] === "-" || exp[0] === "+") {
     // Check if there are other operators clicked
     let operators = ["+", "-", "×", "÷"];
-    let operatorCount = 0;
+    operatorCount = 0;
     exp.map((r) => {
       if (operators.includes(r)) operatorCount++;
     });
@@ -99,14 +99,37 @@ function evaluate() {
   }
 
   let expArr;
-  if (displayArea.textContent.includes("+")) operator = "+";
-  if (displayArea.textContent.includes("-")) operator = "-";
-  if (displayArea.textContent.includes("×")) operator = "×";
-  if (displayArea.textContent.includes("÷")) operator = "÷";
+  operator = getOperator(displayArea.textContent);
   expArr = displayArea.textContent.split(operator);
   console.log(expArr);
+  console.log(operatorCount);
 
-  firstNum = Number(expArr[0]);
-  secondNum = Number(expArr[1]);
-  displayArea.textContent = operate(firstNum, operator, secondNum);
+  if (operatorCount === 2) {
+    let secondOperator = getOperator(expArr[1]);
+    console.log(secondOperator);
+    console.log(expArr);
+
+    expArr = expArr.concat(expArr[1].split(secondOperator));
+    console.log(expArr);
+    firstNum = operator + expArr[2];
+    firstNum = Number(firstNum);
+    secondNum = Number(expArr[3]);
+    console.log(firstNum, secondNum);
+    displayArea.textContent = operate(firstNum, secondOperator, secondNum);
+    operatorCount = 0;
+  } else {
+    firstNum = Number(expArr[0]);
+    secondNum = Number(expArr[1]);
+
+    displayArea.textContent = operate(firstNum, operator, secondNum);
+  }
+}
+
+function getOperator(str) {
+  let operatorInStr;
+  if (str.includes("+")) operatorInStr = "+";
+  if (str.includes("-")) operatorInStr = "-";
+  if (str.includes("×")) operatorInStr = "×";
+  if (str.includes("÷")) operatorInStr = "÷";
+  return operatorInStr;
 }
